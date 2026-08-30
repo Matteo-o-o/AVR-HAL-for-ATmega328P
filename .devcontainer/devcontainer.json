@@ -1,0 +1,17 @@
+{
+  "name": "AVR Bare-Metal Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools"
+      ]
+    }
+  },
+  "runArgs": [
+    "--privileged"
+  ],
+  "workspaceFolder": "/workspace"
+}
