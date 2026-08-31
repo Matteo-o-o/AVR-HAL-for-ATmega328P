@@ -13,5 +13,9 @@
   "runArgs": [
     "--privileged"
   ],
-  "workspaceFolder": "/workspace"
+  "mounts": [
+    "source=/dev/bus/usb,target=/dev/bus/usb,type=bind"
+  ],
+  "workspaceFolder": "/workspaces/AVR-HAL-for-ATmega328P",
+  "postCreateCommand": "git config --global --add safe.directory '*'"
 }

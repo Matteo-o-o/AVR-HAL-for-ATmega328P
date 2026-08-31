@@ -1,0 +1,21 @@
+# Output directories (fichiers de compilation)
+build/
+*.elf
+*.hex
+*.o
+*.d
+*.a
+*.s
+
+.vscode/
+
+
+# Dev Container
+# On conserve la configuration dans Git, mais on ignore l'état local s'il y en a un
+.devcontainer/build.log
+
+# Fichiers système et éditeur
+.DS_Store
+Thumbs.db
+*~
+*.swp

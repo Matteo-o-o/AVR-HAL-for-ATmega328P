@@ -8,4 +8,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     avr-libc \
     avrdude \
     git \
+    ca-certificates \
     && rm -rf /var/lib/apt-get/lists/*
