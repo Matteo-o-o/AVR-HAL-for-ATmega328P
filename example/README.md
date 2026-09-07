@@ -57,7 +57,7 @@ Working progress
    - Setup the LED like in LED Blinking
 - Behavior: Uses Timer1 CTC interrupt tick (1 ms resolution) to toggle PB5 every 500 ms without blocking CPU execution.
 
-### Exercise 2.2: LED Fade with Timer0 Fast PWM
+### LED Fade with Timer0 Fast PWM
 
 - Pin: `PD6` (PIN 12)
 - Wiring :
