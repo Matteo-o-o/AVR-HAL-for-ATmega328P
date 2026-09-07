@@ -1,10 +1,13 @@
-#ifdef TIMER_H
+#ifndef TIMER_H
 #define TIMER_H
+
+#include <stdint.h>  
+#include <stdbool.h> 
 
 // Enum of PWM availible on Timer0
 typedef enum{
-    TIMER0_PWM_CHANNEL_A = 0;  // PD6
-    TIMER0_PWM_CHANNEL_B;      // PD5
+    TIMER0_PWM_CHANNEL_A = 0,  // PD6
+    TIMER0_PWM_CHANNEL_B      // PD5
 }timer0_pwm_channel_t;
 
 // Initizialisation for Timer 1 in mode CTC 
