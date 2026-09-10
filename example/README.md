@@ -28,7 +28,24 @@ Note: Other devices can be used to flash (e.g., Arduino as ISP or AVRISP mkII). 
 
 This is used to drive UART/USART serial communication and debugging tests.
 
-Working progress
+| USB-TTL Pin | Signal | → | ATmega328P Pin | Function |
+|:-----------:|:------:|:-:|:---------------|:---------|
+| TXD | TX | → | Pin 2 (PD0) | RXD (ATmega328P Receive) |
+| RXD | RX | → | Pin 3 (PD1) | TXD (ATmega328P Transmit) |
+| GND | GND | → | Pin 8, 22 | Common Ground |
+| VCC | 5V / 3.3V | → | Pin 7 | Power Supply *(optional if powered via USBasp)* |
+
+*Note: Ensure cross-wiring between the adapter and the MCU (`TX → RX` and `RX → TX`). Always connect a common ground between the USB-TTL adapter and the MCU.*
+
+#### Serial Terminal Setup
+
+To interact with the UART tests, you must use an external serial terminal software configured to **(value in uart_init()) baud, 8 data bits, no parity, 1 stop bit (8N1)**:
+
+- **Linux (`picocom`)**:
+  ```bash
+  picocom -b 9600 /dev/ttyUSB0 --echo
+
+Other serial terminal software can also be used, such as PuTTY, Minicom, Screen, Tera Term, or Serial Monitor in the Arduino IDE
 
 ## GPIO
 
@@ -63,3 +80,20 @@ Working progress
 - Wiring :
    - Connect LED anode to PD6 via a 220Ω resistor, connect cathode to GND.
 - Behavior: Generates an 8-bit Fast PWM signal on Timer0 Channel A. Modulates the duty cycle non-blockingly from 0 to 255 and back every 5 ms per step for a smooth fade effect.
+
+## UART / USART
+
+### Serial Interactive LED Control
+
+- Pins: 
+  - `PD0` (PIN 2) (RXD) & `PD1` (PIN 3) (TXD)
+  - `PB5` (PIN 19) (Output LED)
+- Wiring:
+  - Wire the USB to TTL serial adapter as described in the setup section.
+  - Setup the LED on `PB5` like in LED Blinking.
+- Behavior:
+  - Displays a welcome banner and instructions upon startup over the serial interface.
+  - Listens for serial commands non-blockingly:
+    - Sending `'1'` turns the LED on `PB5` ON and responds with `LED: ON`.
+    - Sending `'0'` turns the LED on `PB5` OFF and responds with `LED: OFF`.
+    - Ignores `\r` / `\n` characters and reports unhandled commands.
