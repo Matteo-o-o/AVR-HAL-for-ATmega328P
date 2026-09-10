@@ -2,7 +2,8 @@
 # HARDWARE CONFIGURATION AND TOOLCHAIN DEFINITIONS
 # ==============================================================================
 MCU         := atmega328p
-F_CPU       := 8000000UL
+#F_CPU       := 8000000UL    # DEFAULT VALUE (use this if you have no idea of your error in F_CPU)
+F_CPU 		:= 8217600UL	 # F_CPU estimate with uart communication with 1 computer (clock trustable)
 PROGRAMMER  := usbasp
 
 # AVR Toolchain Executables
