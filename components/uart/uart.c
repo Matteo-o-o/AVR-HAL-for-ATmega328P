@@ -1,7 +1,16 @@
 #include "uart.h"
 #include <avr/io.h>
+#include <stdio.h>
 
+static int uart_putchar(char c, FILE *stream) {
+    if (c == '\n') {
+        uart_transmission_byte('\r'); // clean synthax
+    }
+    uart_transmission_byte(c);
+    return 0;
+}
 
+static FILE uart_output = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
 
 void uart_init(uint32_t baud_rate){
     // Speed config :
@@ -19,6 +28,9 @@ void uart_init(uint32_t baud_rate){
     // Format : Asynchronous , No parity, 1 bit stop, 8 data bits (8N1)
     UCSR0C = 0;
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
+
+    // printf use : Standard output redirection
+    stdout = &uart_output;
 }
 
 void uart_transmission_byte(uint8_t data){
