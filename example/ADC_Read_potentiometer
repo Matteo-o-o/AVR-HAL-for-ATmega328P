@@ -1,0 +1,41 @@
+#include <util/delay.h>
+#include <avr/io.h>
+#include <stdio.h>
+
+#include "adc.h"
+#include "uart.h"
+
+int main(void) {
+    // Initialize UART peripheral at 9600 baud rate
+    // (This automatically redirects stdout to UART for printf support)
+    uart_init(9600);
+
+    // Initialize ADC with AVCC (5.0V) as voltage reference
+    adc_init(ADC_REF_AVCC);
+
+    // Send welcome header message in UART
+    printf("\r\n--- Read Potentiometer Test on ADC0 ---\r\n");
+
+    while (1) {
+        // Read raw 10-bit digital value from ADC0 (PC0)
+        uint16_t raw = adc_read_single(ADC_CHANNEL_0);
+
+        // Read converted voltage in millivolts from ADC0 (m)
+        uint16_t mv = adc_read_mv(ADC_CHANNEL_0);
+
+        // Separate integer volts and remaining millivolts for zero-float formatting
+        uint16_t volts = mv / 1000;
+        uint16_t decimals = mv % 1000;
+
+        // Print formatted readings over UART:
+        // - %4u: Raw 10-bit ADC value aligned to 4 characters
+        // - %u.%03u: Voltage formatted as X.XXX V with leading zeros for millivolts
+        printf("ADC0 Raw: %4u | Voltage: %u.%03u V (%4u mV)\r\n", 
+               raw, volts, decimals, mv);
+
+        // 500 ms sampling interval
+        _delay_ms(500);
+    }
+
+    return 0;
+}

@@ -44,7 +44,6 @@ To interact with the UART tests, you must use an external serial terminal softwa
 - **Linux (`picocom`)**:
   ```bash
   picocom -b 9600 /dev/ttyUSB0 --echo
-
 Other serial terminal software can also be used, such as PuTTY, Minicom, Screen, Tera Term, or Serial Monitor in the Arduino IDE
 
 ## GPIO
@@ -97,3 +96,21 @@ Other serial terminal software can also be used, such as PuTTY, Minicom, Screen,
     - Sending `'1'` turns the LED on `PB5` ON and responds with `LED: ON`.
     - Sending `'0'` turns the LED on `PB5` OFF and responds with `LED: OFF`.
     - Ignores `\r` / `\n` characters and reports unhandled commands.
+
+
+
+# ADC
+
+### Potentiometer Readout on ADC0
+
+- Pins:
+  - `PD0` (PIN 2) (RXD) & `PD1` (PIN 3) (TXD)
+  - `PC0` (PIN 23) (ADC0)
+- Wiring:
+  - Wire the USB to TTL serial adapter as described in the setup section.
+  - Connect the middle terminal (wiper) of a 10kΩ potentiometer to `PC0` (PIN 23).
+  - Connect one outer terminal of the potentiometer to `VCC` (PIN 7) and the other to `GND` (PIN 8/22).
+- Behavior:
+  - Reads the analog voltage from the potentiometer on `ADC0` every 500 ms.
+  - Converts the 10-bit raw digital reading ($0$ to $1023$) to millivolts using 32-bit integer arithmetic.
+  - Formats and outputs both raw values and calculated voltages (as `X.XXX V`) over UART via redirected `printf()`.
