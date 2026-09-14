@@ -53,12 +53,12 @@ void pcint_enable_pin(uint8_t pcint_pin){
     }
     // (Only 7 pin on port C)
     else if(pcint_pin < 15){
-        PCMSK1 |= (1 << pcint_pin - 8);
+        PCMSK1 |= (1 << (pcint_pin - 8));
         // Enable port B
         PCICR |= (1 << PCIE1);
     }
         else if(pcint_pin < 24){
-        PCMSK2 |= (1 << pcint_pin - 16);
+        PCMSK2 |= (1 << (pcint_pin - 16));
         // Enable port B
         PCICR |= (1 << PCIE2);
     }
