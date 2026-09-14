@@ -2,21 +2,21 @@
 #include "uart.h"
 #include "gpio.h"
 
-// PB5 : LED
-#define LED_PORT PORT_B
-#define LED_PIN  PIN_5
+// PB5: Pin 5 on PORT B
+#define LED_PORT GPIO_PORTB
+#define LED_PIN  GPIO_PIN5
 
 int main(void) {
-    // Initialize LED pin as OUTPUT using custom GPIO driver
-    gpio_pin_mode(LED_PORT, LED_PIN, GPIO_OUTPUT);
-    gpio_pin_write(LED_PORT, LED_PIN, GPIO_LOW); // Ensure LED is OFF at boot
+    // Initialize PB5 pin as Output
+    gpio_init(LED_PORT, LED_PIN, GPIO_MODE_OUTPUT);
+    gpio_write(LED_PORT, LED_PIN, GPIO_STATE_LOW); // Ensure LED is OFF at boot
 
-    // 2. Initialize USART0 peripheral at 9600 baud rate
+    // Initialize USART peripheral at 9600 baud
     uart_init(9600);
 
     // Send banner messages to serial terminal
-    uart_transmit_string("=== Serial LED Control ===\r\n");
-    uart_transmit_string("Send '1' to TURN ON, '0' to TURN OFF\r\n");
+    uart_transmission_string("=== Serial LED Control ===\r\n");
+    uart_transmission_string("Send '1' to TURN ON, '0' to TURN OFF\r\n");
 
     while (1) {
         // Non-blocking serial line check
@@ -24,19 +24,21 @@ int main(void) {
             uint8_t command = uart_receive_byte();
 
             if (command == '1') {
-                gpio_pin_write(LED_PORT, LED_PIN, GPIO_HIGH);
-                uart_transmit_string("LED: ON\r\n");
+                gpio_set_high(LED_PORT, LED_PIN);
+                uart_transmission_string("LED: ON\r\n");
             } 
             else if (command == '0') {
-                gpio_pin_write(LED_PORT, LED_PIN, GPIO_LOW);
-                uart_transmit_string("LED: OFF\r\n");
+                gpio_set_low(LED_PORT, LED_PIN);
+                uart_transmission_string("LED: OFF\r\n");
             } 
             else if (command != '\r' && command != '\n') {
                 // Ignore CR/LF carriage returns sent by serial monitors
-                uart_transmit_string("Unknown command! Please use '1' or '0'.\r\n");
+                uart_transmission_string("Unknown command! Please use '1' or '0'.\r\n");
             }
         }
 
-        // Main loop remains free for other concurrent tasks
+        // Main loop remains unblocked for concurrent execution
     }
+
+    return 0;
 }
