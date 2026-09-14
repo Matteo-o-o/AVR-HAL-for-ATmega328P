@@ -4,7 +4,7 @@
 
 static uint16_t g_vref_adc_mv = 5000;
 
-void adc_int(adc_ref_t ref){
+void adc_init(adc_ref_t ref){
     // Clean previous adc config 
     ADMUX = (ADMUX & (~((1 << REFS0) | (1 << REFS1))));
     // Set config (BIT REFS0:1 in ADMUX)
