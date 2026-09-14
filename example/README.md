@@ -114,3 +114,19 @@ Other serial terminal software can also be used, such as PuTTY, Minicom, Screen,
   - Reads the analog voltage from the potentiometer on `ADC0` every 500 ms.
   - Converts the 10-bit raw digital reading ($0$ to $1023$) to millivolts using 32-bit integer arithmetic.
   - Formats and outputs both raw values and calculated voltages (as `X.XXX V`) over UART via redirected `printf()`.
+
+## EXTERNAL INTERRUPTS
+
+### INT0 Dedicated Hardware Interrupt
+
+- Pins:
+  - `PD2` (PIN 4) (INT0 Input)
+  - `PB5` (PIN 19) (Output LED)
+  - `PD0` (PIN 2) (RXD) & `PD1` (PIN 3) (TXD)
+- Wiring:
+  - Setup the USB-TTL adapter as described in the setup section and `PB5` LED like in LED Blinking example.
+  - Connect one terminal of a push-button to `PD2` and the other directly to `GND`.
+- Behavior:
+  - Configures `PD2` with internal pull-up and enables `INT0` falling-edge interrupt.
+  - On button press, `ISR(INT0_vect)` debounces the signal and sets a volatile event flag.
+  - The main loop processes the flag non-blockingly, toggles `PB5` LED, and outputs event telemetry via UART `printf()`.
